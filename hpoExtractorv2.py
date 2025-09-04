@@ -1,5 +1,5 @@
 try:
-    import streamlit as st
+    import streamlit as st  # type: ignore[import-not-found]
 except ImportError:
     st = None  # Streamlit is optional for API usage
 import pandas as pd
@@ -9,6 +9,8 @@ import re
 import time
 import random
 import logging
+from dotenv import load_dotenv
+import os
 from typing import Dict, List, Optional
 from urllib.parse import quote
 from openai import OpenAI
@@ -17,11 +19,17 @@ from openai import OpenAI
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Initialize Grok API client
+
+# Load .env
+load_dotenv()
+
+# Initialize Groq API client directly
 openai = OpenAI(
-    api_key="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",            
+    api_key=os.getenv("HPO_API_KEY"),
     base_url="https://api.groq.com/openai/v1"
 )
+
+
 
 class HPODataExtractor:
     def __init__(self):
@@ -112,20 +120,27 @@ class HPODataExtractor:
         return self.get_hpo_id(term)
 
     def process_terms_from_text(self, text: str) -> List[Dict]:
-        """Process a text string containing multiple terms separated by '/'."""
-        terms = [t.strip() for t in text.split('/') if t.strip()]
-        results = []
-        for term in terms:
-            result = self.process_term(term)
-            if result:
-                results.append(result)
-        return results
+            """
+            Process a text string containing multiple terms separated by common delimiters.
+            Splits on , . - ? / \ | and whitespace.
+            """
+            # Split on multiple delimiters using regex
+            terms = re.split(r'[,\.\-?\/\\|\s]+', text)
+            # Remove empty strings
+            terms = [t.strip() for t in terms if t.strip()]
+
+            results = []
+            for term in terms:
+                result = self.process_term(term)
+                if result:
+                    results.append(result)
+            return results
 
 def create_hpo_analysis_interface():
     """Create the HPO analysis interface."""
     if st is None:
         raise RuntimeError("Streamlit is not installed. Install it to use the UI.")
-    st.header("🧬 HPO ID Extractor")
+    st.header(" HPO ID Extractor")
     
     # Initialize HPO extractor
     if 'hpo_extractor' not in st.session_state:
