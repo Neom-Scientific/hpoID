@@ -1,5 +1,5 @@
 try:
-    import streamlit as st  # type: ignore[import-not-found]
+    import streamlit as st
 except ImportError:
     st = None  # Streamlit is optional for API usage
 import pandas as pd
@@ -9,8 +9,6 @@ import re
 import time
 import random
 import logging
-from dotenv import load_dotenv
-import os
 from typing import Dict, List, Optional
 from urllib.parse import quote
 from openai import OpenAI
@@ -19,13 +17,9 @@ from openai import OpenAI
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
-# Load .env
-load_dotenv()
-
-# Initialize Groq API client directly
+# Initialize Grok API client
 openai = OpenAI(
-    api_key=os.getenv("HPO_API_KEY"),
+    api_key="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",            
     base_url="https://api.groq.com/openai/v1"
 )
 
