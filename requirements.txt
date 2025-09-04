@@ -83,7 +83,6 @@ groovy==0.1.2
 grpcio==1.73.1
 h11==0.16.0
 h5py==3.14.0
-htr-pipeline @ file:///F:/HTRPipeline-master/HTRPipeline-master
 httpcore==1.0.9
 httpx==0.28.1
 huggingface-hub==0.34.4
@@ -251,4 +250,5 @@ zipp==3.23.0
 zope.event==5.0
 zope.interface==7.2
 zstandard==0.23.0
+
 
