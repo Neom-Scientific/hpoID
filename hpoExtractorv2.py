@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 # Initialize Grok API client
 openai = OpenAI(
-    api_key="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",
+    api_key="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",
     base_url="https://api.groq.com/openai/v1"
 )
 
